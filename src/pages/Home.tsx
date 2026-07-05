@@ -17,7 +17,8 @@ export function Home() {
         </p>
         <div className="hero-actions">
           <Link to="/exercises" className="btn primary">Exercise Solutions</Link>
-          <Link to="/syllabus" className="btn secondary">Study Plan</Link>
+          <Link to="/materials" className="btn secondary">Course PDFs</Link>
+          <Link to="/syllabus" className="btn ghost">Study Plan</Link>
         </div>
       </header>
 

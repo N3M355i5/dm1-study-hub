@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { getModule } from "../data/syllabus";
+import { getMaterialsByModule } from "../data/materials";
 import { Formula } from "../components/Formula";
 import { VisualPanel } from "../components/VisualPanel";
+import { MaterialLinks } from "../components/MaterialLinks";
 
 export function ModulePage({ moduleId }: { moduleId: string }) {
   const mod = getModule(moduleId);
+  const moduleMaterials = getMaterialsByModule(moduleId);
 
   if (!mod) {
     return (
@@ -27,6 +30,8 @@ export function ModulePage({ moduleId }: { moduleId: string }) {
       </header>
 
       <VisualPanel visualId={mod.visual} />
+
+      <MaterialLinks items={moduleMaterials} />
 
       <section className="section">
         <h2>Key Concepts</h2>

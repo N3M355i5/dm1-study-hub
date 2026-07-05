@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { modules, studyPlan } from "../data/syllabus";
+import { getMaterialsByModule } from "../data/materials";
+import { MaterialLinks } from "../components/MaterialLinks";
 
 const checklist = [
   { topic: "Build decision tree manually (golf / vertebrate dataset)", module: "decision-trees" },
@@ -26,6 +28,11 @@ export function ExamPrep() {
           Attend only your assigned exercise group.
         </p>
       </header>
+
+      <MaterialLinks
+        items={getMaterialsByModule("exam-prep")}
+        title="Exam PDFs"
+      />
 
       <section className="section exam-alert">
         <h2>High-Yield Exam Topics</h2>

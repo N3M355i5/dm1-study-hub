@@ -41,6 +41,9 @@ export function Layout() {
           <NavLink to="/exercises" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
             <span className="nav-icon">✎</span> Exercises
           </NavLink>
+          <NavLink to="/materials" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+            <span className="nav-icon">📄</span> Materials
+          </NavLink>
           <NavLink to="/syllabus" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
             <span className="nav-icon">☰</span> Syllabus
           </NavLink>

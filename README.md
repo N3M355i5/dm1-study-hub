@@ -30,7 +30,8 @@ npx vercel
 
 ## What's included
 
-- **13 lecture modules** aligned with course PDFs (incl. Feature Selection correlations)
+- **34 course PDFs** — lecture slides, exercises, formula sheet, and exam resources readable in-browser
+- **Materials library** at `/materials` with embedded PDF viewer
 - **Exercises 1–10** with step-by-step solutions (reveal one step at a time)
 - **Additional practice sheets** (E6–E10) with full worked solutions from your PDFs
 - **8 interactive labs** — drag K-Means centroids, tune DBSCAN ε/minPts, live confusion matrix

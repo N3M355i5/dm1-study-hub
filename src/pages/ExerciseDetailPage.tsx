@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { allExercises, getExercise } from "../data/exercises";
+import { getMaterialsByExercise } from "../data/materials";
 import { StepSolution } from "../components/StepSolution";
 import { VisualPanel } from "../components/VisualPanel";
+import { MaterialLinks } from "../components/MaterialLinks";
 
 const EXERCISE_VISUALS: Record<number, string> = {
   2: "naive-bayes",
@@ -17,6 +19,7 @@ const EXERCISE_VISUALS: Record<number, string> = {
 
 export function ExerciseDetailPage({ exerciseId }: { exerciseId: number }) {
   const ex = getExercise(exerciseId);
+  const exerciseMaterials = getMaterialsByExercise(exerciseId);
   const idx = allExercises.findIndex((e) => e.id === exerciseId);
   const prev = idx > 0 ? allExercises[idx - 1] : null;
   const next = idx < allExercises.length - 1 ? allExercises[idx + 1] : null;
@@ -44,6 +47,8 @@ export function ExerciseDetailPage({ exerciseId }: { exerciseId: number }) {
       </header>
 
       {EXERCISE_VISUALS[ex.id] && <VisualPanel visualId={EXERCISE_VISUALS[ex.id]} />}
+
+      <MaterialLinks items={exerciseMaterials} title="Exercise PDF" />
 
       <div className="question-accordion">
         {ex.questions.map((q, qi) => (
