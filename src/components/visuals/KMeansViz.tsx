@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, type MouseEvent } from "react";
+import { useState, useMemo, useCallback, type PointerEvent } from "react";
 
 type Point = { id: string; x: number; y: number; cx?: number; cy?: number };
 
@@ -64,29 +64,44 @@ export function KMeansViz() {
   const sx = (v: number) => 40 + v * 38;
   const sy = (v: number) => 260 - v * 28;
 
-  const onCentroidDrag = useCallback((idx: number, e: MouseEvent<SVGCircleElement>) => {
+  const onCentroidPointerDown = useCallback((idx: number, e: PointerEvent<SVGCircleElement>) => {
     e.preventDefault();
+    const handle = e.currentTarget;
+    handle.setPointerCapture(e.pointerId);
     setDragging(idx);
-    const svg = e.currentTarget.ownerSVGElement;
+    const svg = handle.ownerSVGElement;
     if (!svg) return;
-    const move = (ev: globalThis.MouseEvent) => {
+
+    const updateFromClient = (clientX: number, clientY: number) => {
       const pt = svg.createSVGPoint();
-      pt.x = ev.clientX;
-      pt.y = ev.clientY;
+      pt.x = clientX;
+      pt.y = clientY;
       const ctm = svg.getScreenCTM();
       if (!ctm) return;
       const p = pt.matrixTransform(ctm.inverse());
       setCentroids((prev) => prev.map((c, i) =>
-        i === idx ? { ...c, x: Math.max(0.5, Math.min(8, (p.x - 40) / 38)), y: Math.max(0.5, Math.min(9, (260 - p.y) / 28)) } : c
+        i === idx
+          ? {
+              ...c,
+              x: Math.max(0.5, Math.min(8, (p.x - 40) / 38)),
+              y: Math.max(0.5, Math.min(9, (260 - p.y) / 28)),
+            }
+          : c
       ));
     };
-    const up = () => {
+
+    const onMove = (ev: globalThis.PointerEvent) => updateFromClient(ev.clientX, ev.clientY);
+    const onUp = (ev: globalThis.PointerEvent) => {
       setDragging(null);
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("mouseup", up);
+      handle.releasePointerCapture(ev.pointerId);
+      handle.removeEventListener("pointermove", onMove);
+      handle.removeEventListener("pointerup", onUp);
+      handle.removeEventListener("pointercancel", onUp);
     };
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", up);
+
+    handle.addEventListener("pointermove", onMove);
+    handle.addEventListener("pointerup", onUp);
+    handle.addEventListener("pointercancel", onUp);
   }, []);
 
   return (
@@ -98,7 +113,7 @@ export function KMeansViz() {
           <span>SSE <strong>{sse.toFixed(2)}</strong></span>
         </div>
       </div>
-      <p className="viz-hint">Drag centroids (rings) · Click &quot;Assign &amp; Update&quot; to run one iteration</p>
+      <p className="viz-hint">Drag or touch centroids (rings) · Tap &quot;Assign &amp; Update&quot; to run one iteration</p>
 
       <svg viewBox="0 0 360 280" className="viz-svg kmeans-svg">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -119,11 +134,16 @@ export function KMeansViz() {
         {centroids.map((c, i) => (
           <g key={i}>
             <circle
+              cx={sx(c.x)} cy={sy(c.y)} r="18"
+              fill="transparent"
+              className="centroid-hit"
+              onPointerDown={(e) => onCentroidPointerDown(i, e)}
+            />
+            <circle
               cx={sx(c.x)} cy={sy(c.y)} r="14"
               fill="none" stroke={c.color} strokeWidth="3"
               className="centroid-handle"
-              style={{ cursor: dragging === i ? "grabbing" : "grab" }}
-              onMouseDown={(e) => onCentroidDrag(i, e)}
+              style={{ cursor: dragging === i ? "grabbing" : "grab", pointerEvents: "none" }}
             />
             <text x={sx(c.x)} y={sy(c.y) + 4} textAnchor="middle" fill="#fff" fontSize="9" fontWeight="700">C{i + 1}</text>
           </g>

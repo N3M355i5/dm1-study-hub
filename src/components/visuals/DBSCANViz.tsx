@@ -65,10 +65,16 @@ export function DBSCANViz() {
               <circle cx={sx(p.x)} cy={sy(p.y)} r={eps * 45} fill="none" stroke="#6366f1" strokeWidth="2" strokeDasharray="6" opacity="0.6" />
             )}
             <circle
+              cx={sx(p.x)} cy={sy(p.y)} r="22"
+              fill="transparent"
+              className="data-point-hit"
+              onClick={() => setSelected(p.id)}
+            />
+            <circle
               cx={sx(p.x)} cy={sy(p.y)} r={computedTypes[i] === "core" ? 12 : 9}
               fill={colors[computedTypes[i]]}
               className="data-point clickable"
-              onClick={() => setSelected(p.id)}
+              style={{ pointerEvents: "none" }}
             />
             <text x={sx(p.x)} y={sy(p.y) + 4} textAnchor="middle" fill="#fff" fontSize="10" fontWeight="600">{p.id}</text>
           </g>

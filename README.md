@@ -1,5 +1,7 @@
 # DM I Study Hub
 
+**Live site:** [https://dm1-study-hub.vercel.app/](https://dm1-study-hub.vercel.app/)
+
 Interactive study website for **Data Mining I** (OVGU, Prof. Myra Spiliopoulou).
 
 Covers all lecture concepts: Classification, Clustering, Model Evaluation, Feature Selection — with interactive visuals, KaTeX formulas, YouTube resources, and exam prep.

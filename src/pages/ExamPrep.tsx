@@ -84,6 +84,7 @@ export function ExamPrep() {
 
       <section className="section">
         <h2>Exercise Sheet Mapping</h2>
+        <div className="md-table-wrap">
         <table className="exam-table">
           <thead>
             <tr><th>Exercise</th><th>Topic</th><th>Module</th></tr>
@@ -109,6 +110,7 @@ export function ExamPrep() {
             ))}
           </tbody>
         </table>
+        </div>
       </section>
     </div>
   );
